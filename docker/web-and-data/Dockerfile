@@ -13,7 +13,9 @@
 # information is exposed. (see: stackoverflow.com/questions/56278325)
 ARG CORE_BRANCH=main
 
-FROM maven:3-eclipse-temurin-21 AS build
+# Pinned to the Maven 3.9 line: the floating 3 tag moved to 3.10, which rejects
+# POMs (e.g. cbioportal-core's) that 3.9 only warned about.
+FROM maven:3.9-eclipse-temurin-21 AS build
 
 WORKDIR /cbioportal
 
@@ -41,7 +43,9 @@ RUN cp src/main/resources/application.properties.EXAMPLE src/main/resources/appl
     && mkdir -p target/dependency \
     && (cd target/dependency && jar -xf ../*-exec.jar)
 
-FROM maven:3-eclipse-temurin-21 AS build-core
+# Pinned to the Maven 3.9 line: the floating 3 tag moved to 3.10, which rejects
+# POMs (e.g. cbioportal-core's) that 3.9 only warned about.
+FROM maven:3.9-eclipse-temurin-21 AS build-core
 ARG CORE_BRANCH
 # This invalidates the Docker cache iff the latest commit hash for the CORE_BRANCH has changed
 ADD https://api.github.com/repos/cBioPortal/cbioportal-core/commits/${CORE_BRANCH} /dev/null

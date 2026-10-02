@@ -11,7 +11,9 @@
 # Use from root directory of repo like:
 #
 # docker build -f docker/web/Dockerfile -t cbioportal-container:web-shenandoah-tag-name .
-FROM maven:3-eclipse-temurin-21 AS build
+# Pinned to the Maven 3.9 line: the floating 3 tag moved to 3.10, which rejects
+# POMs (e.g. cbioportal-core's) that 3.9 only warned about.
+FROM maven:3.9-eclipse-temurin-21 AS build
 
 WORKDIR /cbioportal
 
